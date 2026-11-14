@@ -17,3 +17,25 @@ jobs:
           pip install -r requirements-dev.txt
           ruff check .
           pytest -v.
+
+  imagem:
+    needs: teste
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: docker build -t calculadora:ci .
+      - run: docker run --name calc -p 5000:5000 calculadora:ci
+
+      - run: |
+          for i in $(seq 1 15); do
+            curl -fs http://localhost:5000/saude && exit 0
+            sleep 2
+          done
+          exit 1
+
+      - run: |
+          curl -fs "http://localhost:5000/soma?a=2&b=3" | grep '"resultado":5.0'
+        
+      - name: logs
+        if: failure()
+        run: docker logs calc

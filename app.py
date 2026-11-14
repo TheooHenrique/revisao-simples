@@ -24,8 +24,18 @@ def criar_app(repo=None):
             return {"erro": "informe um título"}, 400
         return repo.criar(titulo), 201
 
+    @app.get("/soma")
+    def soma():
+        try:
+            a = float(request.args.get("a", 0))
+            b = float(request.args.get("b", 0))
+            return {"resultado": a + b}
+        except ValueError:
+            return {"erro": "parâmetros inválidos"}, 400
+
     return app
 
 
 if __name__ == "__main__":
     criar_app().run(host="0.0.0.0", port=5000)
+
