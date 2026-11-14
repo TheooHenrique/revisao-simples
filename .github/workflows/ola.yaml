@@ -1,0 +1,22 @@
+name: ola
+
+on:
+  workflow_dispatch:
+    inputs:
+      nome: 
+        description: "Quem você quer cumprimentar"
+        default: "turma"
+
+jobs:
+  saudacao:
+    runs-on: alpine-latest
+    steps:
+      - name: ola
+        env:
+          NOME: ${{ inputs.nome }}
+        run: |
+          echo "Olá ${{ inputs.nome }}! Seja bem vindo!"
+          echo "O evento que deu trigger foi $GITHUB_EVENT_NAME, e o sistema do runner é $RUNNER_OS"
+
+      - name: docker_version
+        run: docker --version
