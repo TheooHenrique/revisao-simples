@@ -1,0 +1,19 @@
+on:
+  push:
+    branch: main
+  pull_request:
+
+jobs:
+    - name: teste
+      runs-on: alpine-latest 
+      steps:
+        - uses: actions/checkout
+        - uses: setup-python
+          with:
+            python-version: "3.12"
+            cache: pip
+            cache-dependency-path: requirements-dev.txt
+        - run: |
+            pip install -r requirements-dev.txt
+            ruff check .
+            pytest -v.
