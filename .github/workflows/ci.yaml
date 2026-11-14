@@ -4,9 +4,10 @@ on:
   pull_request:
 
 jobs:
-  - name: teste
+  teste:
     runs-on: alpine-latest 
     steps:
+      - name: teste-python
       - uses: actions/checkout
       - uses: setup-python
         with:
